@@ -24,8 +24,11 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding, DashboardViewMo
 
     override fun initialize() {
         binding.rvTodayGoal.adapter = todayGoalAdapter
-        binding.rvHabitStatistics.adapter = habitStatisticsAdapter
         binding.homeViewModel = homeViewModel
+        binding.rvHabitStatistics.apply {
+            adapter = habitStatisticsAdapter
+            itemAnimator = null
+        }
     }
 
     override fun setupViewModel() {
@@ -37,6 +40,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding, DashboardViewMo
             // Dummy Observer for other dependant live data's to work
         }
         viewModel.currentHabitStatisticsData.observe(this) {
+            habitStatisticsAdapter.removeAllItems()
             habitStatisticsAdapter.setItems(it)
         }
         homeViewModel.loggedInUserData.observe(this) {
